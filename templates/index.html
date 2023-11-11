@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>MNIST Image Classifier</title>
     <style>
         /* Add some basic styling */
     </style>
 </head>
+
 <body>
     <input type="file" id="fileInput">
     <button onclick="predict()">Predict</button>
@@ -13,12 +15,12 @@
     <p>Prediction: <span id="prediction"></span></p>
     <script>
         // Function to handle image upload
-        document.getElementById('fileInput').onchange = function(event) {
+        document.getElementById('fileInput').onchange = function (event) {
             var file = event.target.files[0];
             var reader = new FileReader();
-            reader.onload = function() {
+            reader.onload = function () {
                 var img = document.getElementById('uploadedImage');
-                img.onload = function() {
+                img.onload = function () {
                     URL.revokeObjectURL(img.src);
                 }
                 img.src = URL.createObjectURL(file);
@@ -32,35 +34,36 @@
             var file = document.getElementById('fileInput').files[0];
             var formData = new FormData();
             formData.append('file', file);
-            
+
             // Send the image file to a server-side script (like Python Flask) for prediction
             // You'll need to handle this server-side using a Python backend or some other method.
             // This script sends the image file to the server and gets a prediction back.
             fetch('/predict', {
-    method: 'POST',
-    body: formData
-})
-.then(response => {
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-    return response.json();
-})
-.then(prediction => {
-    const predictedDigit = prediction.prediction;
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(prediction => {
+                    const predictedDigit = prediction.prediction;
 
-    // Check the type of predictedDigit and log it to the console
-    console.log(typeof predictedDigit, predictedDigit);
+                    // Check the type of predictedDigit and log it to the console
+                    console.log(typeof predictedDigit, predictedDigit);
 
-    // Display the prediction in the HTML
-    document.getElementById('prediction').innerText = `Predicted Digit: ${predictedDigit}`;
-})
-.catch(error => {
-    console.error('There was a problem with the fetch operation:', error);
-});
+                    // Display the prediction in the HTML
+                    document.getElementById('prediction').innerText = `Predicted Digit: ${predictedDigit}`;
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
 
 
         }
     </script>
 </body>
+
 </html>
